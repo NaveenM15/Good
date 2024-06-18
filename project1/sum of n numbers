@@ -1,0 +1,48 @@
+int In1 = 7;
+int In2 = 8;
+int ENA = 5;
+int SPEED = 210;
+bool direction = true;
+
+void setup() {
+  Serial.begin(9600); // Start serial communication at 9600 baud
+
+  pinMode(In1, OUTPUT);
+  pinMode(In2, OUTPUT);
+  pinMode(ENA, OUTPUT);
+
+  digitalWrite(In1, HIGH);
+  digitalWrite(In2, LOW);
+
+  analogWrite(ENA, SPEED);
+
+  // Debugging statements
+  Serial.println("Setup complete");
+  Serial.print("In1 set to: "); Serial.println(digitalRead(In1));
+  Serial.print("In2 set to: "); Serial.println(digitalRead(In2));
+  Serial.print("ENA set to: "); Serial.println(SPEED);
+}
+
+void loop() {
+  // Change motor direction every 2 seconds
+  if (direction) {
+    digitalWrite(In1, HIGH);
+    digitalWrite(In2, LOW);
+    Serial.println("Direction: FORWARD");
+  } else {
+    digitalWrite(In1, LOW);
+    digitalWrite(In2, HIGH);
+    Serial.println("Direction: REVERSE");
+  }
+
+  analogWrite(ENA, SPEED);
+  Serial.print("Speed: "); Serial.println(SPEED);
+
+  delay(2000); // Wait for 2 seconds
+
+  // Toggle direction
+  direction = !direction;
+
+  // Change speed every cycle
+  SPEED = SPEED == 210 ? 100 : 210;
+}
